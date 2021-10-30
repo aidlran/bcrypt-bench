@@ -1,0 +1,22 @@
+{
+  "name": "bcrypt-test",
+  "version": "1.0.0",
+  "description": "Automatically adjust bcrypt salt level.",
+  "type": "module",
+  "keywords": [
+    "bcrypt",
+    "encryption",
+    "crypt",
+    "crypto",
+    "benchmark"
+  ],
+  "main": "index.js",
+  "author": "Aidan Loughran (https://github.com/aid-lo)",
+  "homepage": "https://github.com/aid-lo/bcrypt-test#readme",
+  "repository": "github:aid-lo/bcrypt-test",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "bcrypt": "^5.0.1"
+  }
+}
