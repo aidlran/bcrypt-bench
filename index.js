@@ -3,11 +3,31 @@ import {hashSync} from "bcrypt";
 
 export default options => {
 
+	(() => {
+		checkProperties(process.env, ["BCRYPT_SALT", "BCRYPT_MAXHASHTIME"]);
+		if (options) {
+			if (options.quickFactor > 100) resetProperty(options, "quickFactor");
+			checkProperties(options, ["minSalt", "maxHashTime", "epochs"]);
+		}
+		function resetProperty(params, property) {
+			delete params[property];
+			process.emitWarning(`Invalid ${params === process.env? "process.env." : ""}${property} value.`, {
+				code: "BCRYPT_TEST"
+			});
+		}
+		function checkProperties(params, properties) {
+			properties.forEach(property => {
+				if (params[property] && Number(params[property]) < 1) resetProperty(params, property);
+			});
+		};
+	})();
+
 	options = Object.assign({
-		minSalt: Number(process.env.BCRYPT_SALT) ?? 10,
+		minSalt: Number(process.env.BCRYPT_SALT ?? 10),
 		maxHashTime: Number(process.env.BCRYPT_MAXHASHTIME ?? 250),
 		epochs: 3,
 		quick: true,
+		quickFactor: (options && options.quick === false) ? 0 : 90,
 		quiet: false
 	}, options ?? {});
 
@@ -26,6 +46,16 @@ export default options => {
 		return fin();
 	}
 
+	options.quickFactor = options.quickFactor / 100 * 0.45;
+
+	(() => {
+		const skippyTarget = options.maxHashTime * options.quickFactor;
+		let skippy = prevTime;
+		while ((skippy += skippy) < skippyTarget) currSalt += 1;
+	})();
+
+	const speedierTarget = options.maxHashTime * (1 - options.quickFactor);
+
 	while (++currSalt) {
 		let time = 0;
 		for (let i = 0; i < options.epochs; i++) time += test(currSalt);
@@ -34,7 +64,7 @@ export default options => {
 		prevTime = time;
 		process.env.BCRYPT_SALT = currSalt.toString();
 		if (!options.quiet) console.log(`  > Increased BCRYPT_SALT to ${currSalt}.`);
-		if (options.quick && time > options.maxHashTime * 0.65) return fin();
+		if (time > speedierTarget) return fin();
 	}
 
 	function test(salt) {
