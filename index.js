@@ -26,7 +26,6 @@ export default options => {
 		minSalt: Number(process.env.BCRYPT_SALT ?? 10),
 		maxHashTime: Number(process.env.BCRYPT_MAXHASHTIME ?? 250),
 		epochs: 3,
-		quick: true,
 		quickFactor: (options && options.quick === false) ? 0 : 90,
 		quiet: false
 	}, options ?? {});
