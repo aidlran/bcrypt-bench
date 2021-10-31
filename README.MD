@@ -55,8 +55,8 @@ hashSync("abcdef", salt);
 
 **.env**
 ```
-BCRYPT_SALT         = 12
-BCRYPT_MAX_HASHTIME = 250
+BCRYPT_SALT        = 12
+BCRYPT_MAXHASHTIME = 250
 ```
 
 **.js**
