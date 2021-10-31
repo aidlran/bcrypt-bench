@@ -6,7 +6,7 @@ export default options => {
 	(() => {
 		checkProperties(process.env, ["BCRYPT_SALT", "BCRYPT_MAXHASHTIME"]);
 		if (options) {
-			if (options.quickFactor > 100) resetProperty(options, "quickFactor");
+			if (options.quickFactor && options.quickFactor > 100) resetProperty(options, "quickFactor");
 			checkProperties(options, ["minSalt", "maxHashTime", "epochs"]);
 		}
 		function resetProperty(params, property) {
