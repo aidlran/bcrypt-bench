@@ -20,15 +20,16 @@ There are some optional configuration values which may be supplied by environmen
 parameter to the function. The precedent is as follows:
 
 1. The function will first look in the object optionally supplied as the first function parameter.
-2. If not present, it will check for an environment variable *(not available for all options)*.
+2. If not present, it will check for an environment variable *(if applicable)*.
 3. If neither are present, it will use the default value.
 
-|  Option        |  Env. Variable        | Default | Description |
-| :------------: | :-------------------: | :-----: | ----------- |
-| `minSalt`      | `BCRYPT_SALT`         | 10      | The absolute minimum salt to use, regardless of maxHashTime. The tests will increment from this level. The env. variable will be set or overwritten during the test.
-| `maxHashTime`  | `BCRYPT_MAX_HASHTIME` | 250     | Target hash time in milliseconds. Different applications have different requirements, so set this to the maximum yours should tolerate.
-| `quick`        |                       | true    | Speeds up the process - will conclude upon finding a salt level that gets very near maxHashTime as it can be assumed that the following test will surpass it.
-| `quiet`        |                       | false   | Prevents console logging.
+|  Option        |  Env. Variable       | Default | Description |
+| :------------: | :------------------: | :-----: | ----------- |
+| `minSalt`      | `BCRYPT_SALT`        | 10      | The absolute minimum salt to use, regardless of maxHashTime. The tests will increment from this level. The env. variable will be set or overwritten during the test.
+| `maxHashTime`  | `BCRYPT_MAXHASHTIME` | 250     | Target hash time in milliseconds. Different applications have different requirements, so set this to the maximum yours should tolerate.
+| `epochs`       |                      | 3       | Number of times to test each salt round value. The higher the number the more accurate the result at the cost of speed. 
+| `quick`        |                      | true    | Speeds up the process - will conclude upon finding a salt level that gets very near maxHashTime as it can be assumed that the following test will surpass it.
+| `quiet`        |                      | false   | Prevents console logging.
 
 # Examples
 
