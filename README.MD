@@ -28,6 +28,7 @@ parameter to the function. The precedent is as follows:
 | `minSalt`      | `BCRYPT_SALT`         | 10      | The absolute minimum salt to use, regardless of maxHashTime. The tests will increment from this level. The env. variable will be set or overwritten during the test.
 | `maxHashTime`  | `BCRYPT_MAX_HASHTIME` | 250     | Target hash time in milliseconds. Different applications have different requirements, so set this to the maximum yours should tolerate.
 | `quick`        |                       | true    | Speeds up the process - will conclude upon finding a salt level that gets very near maxHashTime as it can be assumed that the following test will surpass it.
+| `quiet`        |                       | false   | Prevents console logging.
 
 # Examples
 
@@ -51,7 +52,7 @@ hashSync("abcdef", salt);
 
 ## With Dotenv
 
-**.env**:
+**.env**
 ```
 BCRYPT_SALT         = 12
 BCRYPT_MAX_HASHTIME = 250
@@ -77,7 +78,7 @@ if (process.env.NODE_ENV === "production") {
 hashSync("abcdef", Number(process.env.BCRYPT_SALT)); // Env. vars are strings and will upset bcrypt
 ```
 
-# Plans
+# Future
 
 I may add more functionality such as wrapper functions for bcrypt that use the optimal value automatically, or that
 check and rehash if the salt value has changed (on user login, for example).

@@ -1,13 +1,11 @@
 {
   "name": "bcrypt-test",
   "version": "1.0.0",
-  "description": "Automatically get optimal bcrypt salt.",
+  "description": "Automatically get optimal bcrypt salt rounds.",
   "type": "module",
   "keywords": [
     "bcrypt",
-    "encryption",
-    "crypt",
-    "crypto",
+    "config",
     "benchmark"
   ],
   "main": "index.js",
