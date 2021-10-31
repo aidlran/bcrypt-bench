@@ -1,7 +1,7 @@
 {
   "name": "bcrypt-test",
   "version": "1.0.0",
-  "description": "Automatically adjust bcrypt salt level.",
+  "description": "Automatically get optimal bcrypt salt.",
   "type": "module",
   "keywords": [
     "bcrypt",
