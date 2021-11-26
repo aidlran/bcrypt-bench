@@ -1,19 +1,17 @@
 {
-  "name": "bcrypt-test",
+  "name": "bcrypt-bench",
   "version": "1.3.2",
   "description": "Automatically get optimal bcrypt salt rounds.",
+  "author": "Aidan Loughran <aidlo@protonmail.com> (https://github.com/aid-lo)",
+  "license": "MIT",
   "type": "module",
   "keywords": [
     "bcrypt",
-    "config",
     "benchmark"
   ],
+  "repository": "github:aid-lo/bcrypt-bench",
+  "homepage": "https://github.com/aid-lo/bcrypt-bench#readme",
   "main": "index.js",
-  "author": "Aidan Loughran (https://github.com/aid-lo)",
-  "homepage": "https://github.com/aid-lo/bcrypt-test#readme",
-  "repository": "github:aid-lo/bcrypt-test",
-  "license": "UNLICENSED",
-  "private": true,
   "dependencies": {
     "bcrypt": "^5.0.1"
   }
