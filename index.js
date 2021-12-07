@@ -1,7 +1,7 @@
-import {randomBytes} from "crypto";
-import {hashSync} from "bcrypt";
+const {randomBytes} = require("crypto");
+const {hashSync} = require("bcrypt");
 
-export default options => {
+module.exports = options => {
 
 	(() => {
 		checkProperties(process.env, ["BCRYPT_SALT", "BCRYPT_MAXHASHTIME"]);
@@ -11,15 +11,13 @@ export default options => {
 		}
 		function resetProperty(params, property) {
 			delete params[property];
-			process.emitWarning(`Invalid ${params === process.env? "process.env." : ""}${property} value.`, {
-				code: "BCRYPT_TEST"
-			});
+			warn(`Invalid ${params === process.env? "process.env." : ""}${property} value.`);
 		}
 		function checkProperties(params, properties) {
 			properties.forEach(property => {
 				if (params[property] && Number(params[property]) < 1) resetProperty(params, property);
 			});
-		};
+		}
 	})();
 
 	options = Object.assign({
@@ -30,18 +28,16 @@ export default options => {
 		quiet: false
 	}, options ?? {});
 
-	if (!options.quiet) console.log(`> Performing bcrypt tests (Target: ${options.maxHashTime}ms)`);
+	log(`> Performing bcrypt tests (Target: ${options.maxHashTime}ms)`);
 
 	process.env.BCRYPT_SALT = String(options.minSalt);
 
-	if (!options.quiet) console.log(`  > BCRYPT_SALT set to ${process.env.BCRYPT_SALT}.`);
+	log(`  > BCRYPT_SALT set to ${process.env.BCRYPT_SALT}.`);
 
 	let currSalt = Number(options.minSalt);
 	let prevTime = test(currSalt);
 	if (prevTime > options.maxHashTime) {
-		process.emitWarning(`Minimum salt rounds (${options.minSalt}, ${prevTime}ms) exceeds target of ${options.maxHashTime}ms.`, {
-			code: "BCRYPT_TEST"
-		});
+		warn(`Minimum salt rounds (${options.minSalt}, ${prevTime}ms) exceeds target of ${options.maxHashTime}ms.`);
 		return fin();
 	}
 
@@ -62,7 +58,7 @@ export default options => {
 		if (time > options.maxHashTime) return fin();
 		prevTime = time;
 		process.env.BCRYPT_SALT = currSalt.toString();
-		if (!options.quiet) console.log(`  > Increased BCRYPT_SALT to ${currSalt}.`);
+		log(`  > Increased BCRYPT_SALT to ${currSalt}.`);
 		if (time > speedierTarget) return fin();
 	}
 
@@ -74,7 +70,17 @@ export default options => {
 	}
 
 	function fin() {
-		if (!options.quiet) console.log(`> Done. Using ${process.env.BCRYPT_SALT} salt rounds at approx. ${Math.floor(prevTime)}ms per hash.\n`);
+		log(`> Done. Using ${process.env.BCRYPT_SALT} salt rounds at approx. ${Math.floor(prevTime)}ms per hash.\n`);
 		return Number(process.env.BCRYPT_SALT);
+	}
+
+	function log(msg) {
+		if (!options.quiet) console.log(msg);
+	}
+
+	function warn(msg) {
+		process.emitWarning(msg, {
+			code: "BCRYPT_BENCH"
+		});
 	}
 };
